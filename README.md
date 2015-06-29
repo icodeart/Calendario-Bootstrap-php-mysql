@@ -1,4 +1,4 @@
-# Calendario
+# Calendario by icodeart.com
 Calendario con eventos en php y mysql diseñado en Bootstrap.
 
 #Uso
