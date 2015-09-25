@@ -8,7 +8,20 @@
     $titulo=$row['title'];									    // titulo y
     $evento=$row['body'];									    // cuerpo
 
-
+// Eliminar evento
+if (isset($_POST['eliminar_evento'])) 
+{
+    $id=$_GET['id'];
+    $sql = "DELETE FROM eventos WHERE id = $id";
+    if ($conexion->query($sql)) 
+    {
+        echo "Evento eliminado";
+    }
+    else
+    {
+        echo "El evento no se pudo eliminar";
+    }
+}
  ?>
 
 <!DOCTYPE html>
@@ -22,4 +35,7 @@
 	 <hr>
  	<p><?=$evento?></p>
 </body>
+<form action="" method="post">
+    <button type="submit" class="btn btn-danger" name="eliminar_evento">Eliminar</button>
+</form>
 </html>
