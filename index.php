@@ -4,11 +4,6 @@
     include 'funciones.php'; // incluimos el archivo de funciones
     include 'config.php';    // incluimos el archivo de configuracion
 
-    $im=$conexion->query("SELECT MAX(id) AS id FROM eventos"); // Aqui buscamos el id con el mayor valor
-    $row = $im->fetch_row();                                   // lo traemos
-    $id = trim($row[0]);                                       // y guardamos en la variable $id
-    $id_evento = $id+1;                                        // luego creamos la variable $id_evento que guardara la variable $id sumandole 1, esta variable se usa para guardar el link en la base de datos y tenga su id
-
 
 if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name from
 
@@ -20,12 +15,25 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
         $titulo = evaluar($_POST['title']);   // Recibimos los demas datos desde el form
         $body   = evaluar($_POST['event']);   // y con la funcion evaluar
         $clase  = evaluar($_POST['class']);   // reemplazamos los caracteres con permitidos
-        $link   = evaluar($_POST['url']);     // en los string
 
-        $query="INSERT INTO eventos VALUES(null,'$titulo','$body','$link','$clase','$inicio','$final')";
+        // insertamos el evento
+        $query="INSERT INTO eventos VALUES(null,'$titulo','$body','','$clase','$inicio','$final')";
         $conexion->query($query); // Ejecutamos nuestra sentencia sql
 
-        header("Location:$base_url"); // redireccionamos a nuestra calendario
+        // Obtenemos el ultimo id insetado
+        $im=$conexion->query("SELECT MAX(id) AS id FROM eventos");
+        $row = $im->fetch_row();  
+        $id = trim($row[0]);
+
+        // para generar el link del evento
+        $link = "$base_url"."descripcion_evento.php?id=$id";
+
+        // y actualizamos su link
+        $query="UPDATE eventos SET url = '$link' WHERE id = $id";
+        $conexion->query($query); // Ejecutamos nuestra sentencia sql
+
+
+        header("Location:$base_url"); // redireccionamos a nuestro calendario
 
     }
 }
@@ -89,7 +97,7 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
                                         <p>One fine body&hellip;</p>
                                     </div>
                                 <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -193,7 +201,6 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
       </div>
       <div class="modal-body">
         <form action="" method="post">
-        <input type="hidden" name="url" value="<?=$base_url?>descripcion_evento.php?id=<?=$id_evento?>">
                     <label for="from">Inicio</label>
                     <div class='input-group date' id='from'>
                         <input type='text' id="from" name="from" class="form-control" readonly />
