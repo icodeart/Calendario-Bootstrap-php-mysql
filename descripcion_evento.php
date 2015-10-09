@@ -6,7 +6,9 @@
     $de=$conexion->query("SELECT * FROM eventos WHERE id=$id"); // y lo buscames en la base de dato
     $row=$de->fetch_assoc();									// para buscar  y mostrar su
     $titulo=$row['title'];									    // titulo y
-    $evento=$row['body'];									    // cuerpo
+    $evento=$row['body'];                                       // cuerpo
+    $inicio=$row['inicio_normal'];                                       // cuerpo
+    $final=$row['final_normal'];									    // cuerpo
 
 // Eliminar evento
 if (isset($_POST['eliminar_evento'])) 
@@ -33,6 +35,8 @@ if (isset($_POST['eliminar_evento']))
 <body>
 	 <h3><?=$titulo?></h3>
 	 <hr>
+     <b>Fecha inicio:</b> <?=$inicio?>
+     <b>Fecha termino:</b> <?=$final?>
  	<p><?=$evento?></p>
 </body>
 <form action="" method="post">
