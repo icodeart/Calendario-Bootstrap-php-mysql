@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 23-06-2015 a las 00:16:11
--- Versión del servidor: 5.6.17
--- Versión de PHP: 5.5.12
+-- Servidor: localhost
+-- Tiempo de generación: 09-10-2015 a las 16:59:31
+-- Versión del servidor: 5.5.44-0ubuntu0.14.04.1
+-- Versión de PHP: 5.5.9-1ubuntu4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `events`
+-- Estructura de tabla para la tabla `eventos`
 --
 
 CREATE TABLE IF NOT EXISTS `eventos` (
@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `class` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'event-important',
   `start` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `end` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
+  `inicio_normal` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `final_normal` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
 
