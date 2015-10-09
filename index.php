@@ -1,27 +1,50 @@
 <?php
-    date_default_timezone_set("America/Santiago"); // Definimos nuestra zona horaria
 
-    include 'funciones.php'; // incluimos el archivo de funciones
-    include 'config.php';    // incluimos el archivo de configuracion
+// Definimos nuestra zona horaria
+date_default_timezone_set("America/Santiago");
 
+// incluimos el archivo de funciones
+include 'funciones.php';
 
-if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name from
+// incluimos el archivo de configuracion
+include 'config.php';
 
-    if ($_POST['from']!="" AND $_POST['to']!="") { // Si se ha enviado verificamos que no vengan vacios
+// Verificamos si se ha enviado el campo con name from
+if (isset($_POST['from'])) 
+{
 
-        $inicio = _formatear($_POST['from']); // Recibimos el fecha de inicio y la fecha final desde el form
-        $final  = _formatear($_POST['to']);   // y la formateamos con la funcion _formatear
+    // Si se ha enviado verificamos que no vengan vacios
+    if ($_POST['from']!="" AND $_POST['to']!="") 
+    {
 
-        $inicio_normal = $_POST['from']; // Recibimos el fecha de inicio y la fecha final desde el form
-        $final_normal  = $_POST['to'];   // y la formateamos con la funcion _formatear
+        // Recibimos el fecha de inicio y la fecha final desde el form
 
-        $titulo = evaluar($_POST['title']);   // Recibimos los demas datos desde el form
-        $body   = evaluar($_POST['event']);   // y con la funcion evaluar
-        $clase  = evaluar($_POST['class']);   // reemplazamos los caracteres con permitidos
+        $inicio = _formatear($_POST['from']);
+        // y la formateamos con la funcion _formatear
+
+        $final  = _formatear($_POST['to']);
+
+        // Recibimos el fecha de inicio y la fecha final desde el form
+
+        $inicio_normal = $_POST['from'];
+
+        // y la formateamos con la funcion _formatear
+        $final_normal  = $_POST['to'];
+
+        // Recibimos los demas datos desde el form
+        $titulo = evaluar($_POST['title']);
+
+        // y con la funcion evaluar
+        $body   = evaluar($_POST['event']);
+
+        // reemplazamos los caracteres no permitidos
+        $clase  = evaluar($_POST['class']);
 
         // insertamos el evento
         $query="INSERT INTO eventos VALUES(null,'$titulo','$body','','$clase','$inicio','$final','$inicio_normal','$final_normal')";
-        $conexion->query($query); // Ejecutamos nuestra sentencia sql
+
+        // Ejecutamos nuestra sentencia sql
+        $conexion->query($query); 
 
         // Obtenemos el ultimo id insetado
         $im=$conexion->query("SELECT MAX(id) AS id FROM eventos");
@@ -33,11 +56,12 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
 
         // y actualizamos su link
         $query="UPDATE eventos SET url = '$link' WHERE id = $id";
-        $conexion->query($query); // Ejecutamos nuestra sentencia sql
 
+        // Ejecutamos nuestra sentencia sql
+        $conexion->query($query); 
 
-        header("Location:$base_url"); // redireccionamos a nuestro calendario
-
+        // redireccionamos a nuestro calendario
+        header("Location:$base_url"); 
     }
 }
 
@@ -119,23 +143,42 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
 
                 //establecemos los valores del calendario
                 var options = {
-                        modal: '#events-modal', // definimos que los eventos se mostraran en ventana modal
-                        modal_type:'iframe',    // dentro de un iframe
 
-                        events_source: '<?=$base_url?>obtener_eventos.php', //obtenemos los eventos de la base de datos
+                    // definimos que los eventos se mostraran en ventana modal
+                        modal: '#events-modal', 
 
-                        view: 'month',             // mostramos el calendario en el mes
-                        day: yyyy+"-"+mm+"-"+dd,   // y dia actual
+                        // dentro de un iframe
+                        modal_type:'iframe',    
 
-                        language: 'es-ES', // definimos el idioma por defecto
-                        tmpl_path: '<?=$base_url?>tmpls/', //Template de nuestro calendario
+                        //obtenemos los eventos de la base de datos
+                        events_source: '<?=$base_url?>obtener_eventos.php', 
+
+                        // mostramos el calendario en el mes
+                        view: 'month',             
+
+                        // y dia actual
+                        day: yyyy+"-"+mm+"-"+dd,   
+
+
+                        // definimos el idioma por defecto
+                        language: 'es-ES', 
+
+                        //Template de nuestro calendario
+                        tmpl_path: '<?=$base_url?>tmpls/', 
                         tmpl_cache: false,
 
-                        time_start: '08:00', // Hora de inicio
-                        time_end: '22:00',   // y Hora final de cada dia
-                        time_split: '30',    // intervalo de tiempo entre las hora, en este caso son 30 minutos
 
-                        width: '100%', // Definimos un ancho del 100% a nuestro calendario
+                        // Hora de inicio
+                        time_start: '08:00', 
+
+                        // y Hora final de cada dia
+                        time_end: '22:00',   
+
+                        // intervalo de tiempo entre las hora, en este caso son 30 minutos
+                        time_split: '30',    
+
+                        // Definimos un ancho del 100% a nuestro calendario
+                        width: '100%', 
 
                         onAfterEventsLoad: function(events)
                         {
@@ -166,7 +209,9 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
                         }
                 };
 
-                var calendar = $('#calendar').calendar(options); // id del div donde se mostrara el calendario
+
+                // id del div donde se mostrara el calendario
+                var calendar = $('#calendar').calendar(options); 
 
                 $('.btn-group button[data-calendar-nav]').each(function()
                 {
