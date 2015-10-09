@@ -1,19 +1,36 @@
 <?php
+    
+    //incluimos nuestro archivo config
+    include 'config.php'; 
 
-    include 'config.php'; //incluimos nuestro archivo config
+    // Incluimos nuestro archivo de funciones
+    include 'funciones.php';
 
-    $id=$_GET['id'];											// Aqui obtenemos el id del evento
-    $de=$conexion->query("SELECT * FROM eventos WHERE id=$id"); // y lo buscames en la base de dato
-    $row=$de->fetch_assoc();									// para buscar  y mostrar su
-    $titulo=$row['title'];									    // titulo y
-    $evento=$row['body'];                                       // cuerpo
-    $inicio=$row['inicio_normal'];                                       // cuerpo
-    $final=$row['final_normal'];									    // cuerpo
+    // Obtenemos el id del evento
+    $id  = evaluar($_GET['id']);
+
+    // y lo buscamos en la base de dato
+    $bd  = $conexion->query("SELECT * FROM eventos WHERE id=$id");
+
+    // Obtenemos los datos
+    $row = $bd->fetch_assoc();
+
+    // titulo 
+    $titulo=$row['title'];
+
+    // cuerpo
+    $evento=$row['body'];
+
+    // Fecha inicio
+    $inicio=$row['inicio_normal'];
+
+    // Fecha Termino
+    $final=$row['final_normal'];
 
 // Eliminar evento
 if (isset($_POST['eliminar_evento'])) 
 {
-    $id=$_GET['id'];
+    $id  = evaluar($_GET['id']);
     $sql = "DELETE FROM eventos WHERE id = $id";
     if ($conexion->query($sql)) 
     {
