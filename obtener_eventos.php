@@ -1,33 +1,44 @@
 <?php
 
-	include 'config.php'; // Incluimos nuestro archivo config
+// Incluimos nuestro archivo config
+include 'config.php'; 
 
-    $sql="SELECT * FROM eventos"; // Sentencia sql para traer los eventos desde la base de datos
+// Sentencia sql para traer los eventos desde la base de datos
+$sql="SELECT * FROM eventos"; 
 
-    if ($conexion->query($sql)->num_rows) { // Verificamos si existe un dato
+// Verificamos si existe un dato
+if ($conexion->query($sql)->num_rows)
+{ 
 
-        $datos = array(); // creamos un array
+    // creamos un array
+    $datos = array(); 
 
+    //guardamos en un array multidimensional todos los datos de la consulta
+    $i=0; 
 
-        $i=0; //guardamos en un array multidimensional todos los datos de la consulta
+    // Ejecutamos nuestra sentencia sql
+    $e = $conexion->query($sql); 
 
-        $e = $conexion->query($sql); // Ejecutamos nuestra sentencia sql
+    while($row=$e->fetch_array()) // realizamos un ciclo while para traer los eventos encontrados en la base de dato
+    {
+        // Alimentamos el array con los datos de los eventos
+        $datos[$i] = $row; 
+        $i++;
+    }
 
-        while($row=$e->fetch_array()) // realizamos un ciclo while para traer los eventos encontrados en la base de dato
-        {
-            $datos[$i] = $row; // Alimentamos el array con los datos de los eventos
-            $i++;
-        }
-
-        echo json_encode(               //
-                array(                  //    Aqui transformamos los datos
-                    "success" => 1,     //    encontrados en la base de datos
-                    "result" => $datos  //    al formato json
-                )                       //
+    // Transformamos los datos encontrado en la BD al formato JSON
+        echo json_encode(
+                array(
+                    "success" => 1,
+                    "result" => $datos
+                )
             );
 
-    }else{
-        echo "No hay datos"; // Si no existen eventos mostramos este mensaje.
+    }
+    else
+    {
+        // Si no existen eventos mostramos este mensaje.
+        echo "No hay datos"; 
     }
 
 
