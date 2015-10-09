@@ -12,12 +12,15 @@ if (isset($_POST['from'])) { // Verificamos si se ha enviado el campo con name f
         $inicio = _formatear($_POST['from']); // Recibimos el fecha de inicio y la fecha final desde el form
         $final  = _formatear($_POST['to']);   // y la formateamos con la funcion _formatear
 
+        $inicio_normal = $_POST['from']; // Recibimos el fecha de inicio y la fecha final desde el form
+        $final_normal  = $_POST['to'];   // y la formateamos con la funcion _formatear
+
         $titulo = evaluar($_POST['title']);   // Recibimos los demas datos desde el form
         $body   = evaluar($_POST['event']);   // y con la funcion evaluar
         $clase  = evaluar($_POST['class']);   // reemplazamos los caracteres con permitidos
 
         // insertamos el evento
-        $query="INSERT INTO eventos VALUES(null,'$titulo','$body','','$clase','$inicio','$final')";
+        $query="INSERT INTO eventos VALUES(null,'$titulo','$body','','$clase','$inicio','$final','$inicio_normal','$final_normal')";
         $conexion->query($query); // Ejecutamos nuestra sentencia sql
 
         // Obtenemos el ultimo id insetado
