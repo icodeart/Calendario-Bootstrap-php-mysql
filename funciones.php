@@ -1,7 +1,8 @@
 <?php
+
 /**
 **
-**  CREADO POR iCODEART
+**  BY POR iCODEART
 **
 **********************************************************************
 **                      REDES SOCIALES                            ****
