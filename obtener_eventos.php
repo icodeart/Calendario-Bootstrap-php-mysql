@@ -1,5 +1,24 @@
 <?php
 
+/**
+**
+**  CREADO POR iCODEART
+**
+**********************************************************************
+**                      REDES SOCIALES                            ****
+**********************************************************************
+**                                                                ****
+** FACEBOOK: https://www.facebook.com/icodeart                    ****
+** TWIITER: https://twitter.com/icodeart                          ****
+** YOUTUBE: https://www.youtube.com/c/icodeartdeveloper           ****
+** GITHUB: https://github.com/icodeart                            ****
+** TELEGRAM: https://telegram.me/icodeart                         ****
+** EMAIL: info@icodeart.com                                       ****
+**                                                                ****
+**********************************************************************
+**********************************************************************
+**/
+
 // Incluimos nuestro archivo config
 include 'config.php'; 
 
