@@ -22,8 +22,8 @@
 // Incluimos nuestro archivo config
 include 'config.php'; 
 
-// Sentencia sql para traer los eventos desde la base de datos
-$sql="SELECT * FROM eventos"; 
+// Sentencia sql para traer los agenda desde la base de datos
+$sql="SELECT * FROM agenda"; 
 
 // Verificamos si existe un dato
 if ($conexion->query($sql)->num_rows)
@@ -38,9 +38,9 @@ if ($conexion->query($sql)->num_rows)
     // Ejecutamos nuestra sentencia sql
     $e = $conexion->query($sql); 
 
-    while($row=$e->fetch_array()) // realizamos un ciclo while para traer los eventos encontrados en la base de dato
+    while($row=$e->fetch_array()) // realizamos un ciclo while para traer los agenda encontrados en la base de dato
     {
-        // Alimentamos el array con los datos de los eventos
+        // Alimentamos el array con los datos de los agenda
         $datos[$i] = $row; 
         $i++;
     }
@@ -56,7 +56,7 @@ if ($conexion->query($sql)->num_rows)
     }
     else
     {
-        // Si no existen eventos mostramos este mensaje.
+        // Si no existen agenda mostramos este mensaje.
         echo "No hay datos"; 
     }
 

@@ -29,7 +29,7 @@
     $id  = evaluar($_GET['id']);
 
     // y lo buscamos en la base de dato
-    $bd  = $conexion->query("SELECT * FROM eventos WHERE id=$id");
+    $bd  = $conexion->query("SELECT * FROM agenda WHERE id=$id");
 
     // Obtenemos los datos
     $row = $bd->fetch_assoc();
@@ -50,10 +50,12 @@
 if (isset($_POST['eliminar_evento'])) 
 {
     $id  = evaluar($_GET['id']);
-    $sql = "DELETE FROM eventos WHERE id = $id";
+    $sql = "DELETE FROM agenda WHERE id = $id";
     if ($conexion->query($sql)) 
     {
         echo "Evento eliminado";
+        
+       
     }
     else
     {
@@ -67,15 +69,18 @@ if (isset($_POST['eliminar_evento']))
 <head>
 	<meta charset="UTF-8">
 	<title><?=$titulo?></title>
+          <link rel="stylesheet" type="text/css" href="<?=$base_url?>css/bootstrap.min.css">
 </head>
 <body>
 	 <h3><?=$titulo?></h3>
 	 <hr>
-     <b>Fecha inicio:</b> <?=$inicio?>
-     <b>Fecha termino:</b> <?=$final?>
- 	<p><?=$evento?></p>
+     <b>Fecha inicio:</b> <?=$inicio?> <br>
+     <b>Fecha termino:</b> <?=$final?>  <br>
+ 	 <b>Descripcion:</b><p><?=$evento?></p>
 </body>
 <form action="" method="post">
+     <div class="modal-footer">
     <button type="submit" class="btn btn-danger" name="eliminar_evento">Eliminar</button>
+</div>
 </form>
 </html>

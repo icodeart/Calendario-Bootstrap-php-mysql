@@ -37,18 +37,20 @@ if (isset($_POST['from']))
     {
 
         // Recibimos el fecha de inicio y la fecha final desde el form
-
-        $inicio = _formatear($_POST['from']);
+        $Datein                    = date('d/m/Y H:i:s', strtotime($_POST['from']));
+        $Datefi                    = date('d/m/Y H:i:s', strtotime($_POST['to']));
+        $inicio = _formatear($Datein);
         // y la formateamos con la funcion _formatear
 
-        $final  = _formatear($_POST['to']);
+        $final  = _formatear($Datefi);
 
         // Recibimos el fecha de inicio y la fecha final desde el form
-
-        $inicio_normal = $_POST['from'];
+        $orderDate                      = date('d/m/Y H:i:s', strtotime($_POST['from']));
+        $inicio_normal = $orderDate;
 
         // y la formateamos con la funcion _formatear
-        $final_normal  = $_POST['to'];
+        $orderDate2                      = date('d/m/Y H:i:s', strtotime($_POST['to']));
+        $final_normal  = $orderDate2;
 
         // Recibimos los demas datos desde el form
         $titulo = evaluar($_POST['title']);
@@ -60,13 +62,16 @@ if (isset($_POST['from']))
         $clase  = evaluar($_POST['class']);
 
         // insertamos el evento
-        $query="INSERT INTO eventos VALUES(null,'$titulo','$body','','$clase','$inicio','$final','$inicio_normal','$final_normal')";
+        $query="INSERT INTO agenda VALUES(null,'$titulo','$body','','$clase','$inicio','$final','$inicio_normal','$final_normal')";
 
         // Ejecutamos nuestra sentencia sql
-        $conexion->query($query); 
+        $conexion->query($query)or die('<script type="text/javascript">alert("Horario No Disponible ")</script>');
+
+        header("Location:$base_url");        
+
 
         // Obtenemos el ultimo id insetado
-        $im=$conexion->query("SELECT MAX(id) AS id FROM eventos");
+        $im=$conexion->query("SELECT MAX(id) AS id FROM agenda");
         $row = $im->fetch_row();  
         $id = trim($row[0]);
 
@@ -74,81 +79,77 @@ if (isset($_POST['from']))
         $link = "$base_url"."descripcion_evento.php?id=$id";
 
         // y actualizamos su link
-        $query="UPDATE eventos SET url = '$link' WHERE id = $id";
+        $query="UPDATE agenda SET url = '$link' WHERE id = $id";
 
         // Ejecutamos nuestra sentencia sql
         $conexion->query($query); 
 
         // redireccionamos a nuestro calendario
-        header("Location:$base_url"); 
+        //header("Location:$base_url"); 
     }
 }
 
- ?>
+?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-        <meta charset="utf-8">
-        <title>Calendario</title>
-        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<?=$base_url?>css/calendar.css">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <script type="text/javascript" src="<?=$base_url?>js/es-ES.js"></script>
-        <script src="<?=$base_url?>js/jquery.min.js"></script>
-        <script src="<?=$base_url?>js/moment.js"></script>
-        <script src="<?=$base_url?>js/bootstrap.min.js"></script>
-        <script src="<?=$base_url?>js/bootstrap-datetimepicker.js"></script>
-        <link rel="stylesheet" href="<?=$base_url?>css/bootstrap-datetimepicker.min.css" />
-       <script src="<?=$base_url?>js/bootstrap-datetimepicker.es.js"></script>
-    </head>
-
+    <meta charset="utf-8">
+    <title>Calendario</title>
+    <link rel="stylesheet" type="text/css" href="<?=$base_url?>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=$base_url?>css/calendar.css">
+    <link href="<?=$base_url?>css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="<?=$base_url?>js/es-ES.js"></script>
+    <script src="<?=$base_url?>js/jquery.min.js"></script>
+    <script src="<?=$base_url?>js/moment.js"></script>
+    <script src="<?=$base_url?>js/bootstrap.min.js"></script>
+    <script src="<?=$base_url?>js/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="<?=$base_url?>css/bootstrap-datetimepicker.min.css" />
+    
+</head>
 </head>
 <body style="background: white;">
-
-        <div class="container">
-
-                <div class="row">
-                        <div class="page-header"><h2></h2></div>
-                                <div class="pull-left form-inline"><br>
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary" data-calendar-nav="prev"><< Anterior</button>
-                                            <button class="btn" data-calendar-nav="today">Hoy</button>
-                                            <button class="btn btn-primary" data-calendar-nav="next">Siguiente >></button>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button class="btn btn-warning" data-calendar-view="year">Año</button>
-                                            <button class="btn btn-warning active" data-calendar-view="month">Mes</button>
-                                            <button class="btn btn-warning" data-calendar-view="week">Semana</button>
-                                            <button class="btn btn-warning" data-calendar-view="day">Dia</button>
-                                        </div>
-
-                                </div>
-                                    <div class="pull-right form-inline"><br>
-                                        <button class="btn btn-info" data-toggle='modal' data-target='#add_evento'>Añadir Evento</button>
-                                    </div>
-
-                </div><hr>
-
-                <div class="row">
-                        <div id="calendar"></div> <!-- Aqui se mostrara nuestro calendario -->
-                        <br><br>
+    <div class="container">
+        <div class="row">
+            <!--<div class="page-header"><h4></h4></div>-->
+            <div class="pull-left form-inline"><br>
+                <div class="btn-group">
+                    <button class="btn btn-primary" data-calendar-nav="prev"><i class="fa fa-arrow-left"></i>  </button>
+                    <button class="btn" data-calendar-nav="today">Hoy</button>
+                    <button class="btn btn-primary" data-calendar-nav="next"><i class="fa fa-arrow-right"></i>  </button>
                 </div>
-
-                <!--ventana modal para el calendario-->
-                <div class="modal fade" id="events-modal">
-                    <div class="modal-dialog">
-                            <div class="modal-content">
-                                    <div class="modal-body" style="height: 400px">
-                                        <p>One fine body&hellip;</p>
-                                    </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                <div class="btn-group">
+                    <button class="btn btn-warning" data-calendar-view="year">Año</button>
+                    <button class="btn btn-warning active" data-calendar-view="month">Mes</button>
+                    <button class="btn btn-warning" data-calendar-view="week">Semana</button>
+                    <button class="btn btn-warning" data-calendar-view="day">Dia</button>
+                </div>
+            </div>
+            <div class="pull-right form-inline"><br>
+                <button class="btn btn-info" data-toggle='modal' data-target='#add_evento'>Añadir Evento</button>
+            </div>
         </div>
+        <br><br><br>
+        <div class="row">
+            <div id="calendar"></div> <!-- Aqui se mostrara nuestro calendario -->
+            
+        </div>
+        <!--ventana modal para el calendario-->
+        <div class="modal fade" id="events-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                       <div class="modal-header">
+                        <a href="#" data-dismiss="modal" style="float: right;"> <i class="glyphicon glyphicon-remove "></i> </a>
+                        <br>
+                    </div>
+                    <div class="modal-body" style="height: 400px">
+                        <p>One fine body&hellip;</p>
+                    </div>
+                 
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
 
     <script src="<?=$base_url?>js/underscore-min.js"></script>
     <script src="<?=$base_url?>js/calendar.js"></script>
@@ -163,13 +164,13 @@ if (isset($_POST['from']))
                 //establecemos los valores del calendario
                 var options = {
 
-                    // definimos que los eventos se mostraran en ventana modal
-                        modal: '#events-modal', 
+                    // definimos que los agenda se mostraran en ventana modal
+                    modal: '#events-modal', 
 
                         // dentro de un iframe
                         modal_type:'iframe',    
 
-                        //obtenemos los eventos de la base de datos
+                        //obtenemos los agenda de la base de datos
                         events_source: '<?=$base_url?>obtener_eventos.php', 
 
                         // mostramos el calendario en el mes
@@ -201,32 +202,32 @@ if (isset($_POST['from']))
 
                         onAfterEventsLoad: function(events)
                         {
-                                if(!events)
-                                {
-                                        return;
-                                }
-                                var list = $('#eventlist');
-                                list.html('');
+                            if(!events)
+                            {
+                                return;
+                            }
+                            var list = $('#eventlist');
+                            list.html('');
 
-                                $.each(events, function(key, val)
-                                {
-                                        $(document.createElement('li'))
-                                                .html('<a href="' + val.url + '">' + val.title + '</a>')
-                                                .appendTo(list);
-                                });
+                            $.each(events, function(key, val)
+                            {
+                                $(document.createElement('li'))
+                                .html('<a href="' + val.url + '">' + val.title + '</a>')
+                                .appendTo(list);
+                            });
                         },
                         onAfterViewLoad: function(view)
                         {
-                                $('.page-header h2').text(this.getTitle());
-                                $('.btn-group button').removeClass('active');
-                                $('button[data-calendar-view="' + view + '"]').addClass('active');
+                            $('#page-header').text(this.getTitle());
+                            $('.btn-group button').removeClass('active');
+                            $('button[data-calendar-view="' + view + '"]').addClass('active');
                         },
                         classes: {
-                                months: {
-                                        general: 'label'
-                                }
+                            months: {
+                                general: 'label'
+                            }
                         }
-                };
+                    };
 
 
                 // id del div donde se mostrara el calendario
@@ -234,40 +235,40 @@ if (isset($_POST['from']))
 
                 $('.btn-group button[data-calendar-nav]').each(function()
                 {
-                        var $this = $(this);
-                        $this.click(function()
-                        {
-                                calendar.navigate($this.data('calendar-nav'));
-                        });
+                    var $this = $(this);
+                    $this.click(function()
+                    {
+                        calendar.navigate($this.data('calendar-nav'));
+                    });
                 });
 
                 $('.btn-group button[data-calendar-view]').each(function()
                 {
-                        var $this = $(this);
-                        $this.click(function()
-                        {
-                                calendar.view($this.data('calendar-view'));
-                        });
+                    var $this = $(this);
+                    $this.click(function()
+                    {
+                        calendar.view($this.data('calendar-view'));
+                    });
                 });
 
                 $('#first_day').change(function()
                 {
-                        var value = $(this).val();
-                        value = value.length ? parseInt(value) : null;
-                        calendar.setOptions({first_day: value});
-                        calendar.view();
+                    var value = $(this).val();
+                    value = value.length ? parseInt(value) : null;
+                    calendar.setOptions({first_day: value});
+                    calendar.view();
                 });
-        }(jQuery));
-    </script>
+            }(jQuery));
+        </script>
 
-<div class="modal fade" id="add_evento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Agregar nuevo evento</h4>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post">
+        <div class="modal fade" id="add_evento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Agregar nuevo evento</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
                     <label for="from">Inicio</label>
                     <div class='input-group date' id='from'>
                         <input type='text' id="from" name="from" class="form-control" readonly />
@@ -305,27 +306,27 @@ if (isset($_POST['from']))
                     <label for="body">Evento</label>
                     <textarea id="body" name="event" required class="form-control" rows="3"></textarea>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#from').datetimepicker({
-                language: 'es',
-                minDate: new Date()
-            });
-            $('#to').datetimepicker({
-                language: 'es',
-                minDate: new Date()
-            });
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#from').datetimepicker({
+                                language: 'es',
+                                minDate: new Date()
+                            });
+                            $('#to').datetimepicker({
+                                language: 'es',
+                                minDate: new Date()
+                            });
 
-        });
-    </script>
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+                  <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Agregar</button>
+              </form>
+          </div>
       </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
-          <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Agregar</button>
-        </form>
-    </div>
   </div>
-</div>
 </div>
 </body>
 </html>

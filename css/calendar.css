@@ -266,7 +266,7 @@
   background-color: #fafafa;
 }
 #cal-day-box #cal-day-panel {
-  position: relative;
+  position: sticky;
   padding-left: 60px;
 }
 #cal-day-box #cal-day-panel-hour {
@@ -382,7 +382,9 @@
   font-weight: bolder;
   text-align: center;
   border: 0px solid;
-  padding: 5px 0;
+  padding: 14px 0;
+  z-index: 1;
+    margin-top: -4%;
 }
 .cal-row-head [class*="cal-cell"] small {
   font-weight: normal;

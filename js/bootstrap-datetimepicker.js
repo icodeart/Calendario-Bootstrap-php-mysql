@@ -65,7 +65,7 @@ THE SOFTWARE.
             maxDate: new pMoment().add(100, "y"),
             showToday: true,
             collapse: true,
-            language: "en",
+            language: "es-ES",
             defaultDate: "",
             disabledDates: false,
             enabledDates: false,
@@ -400,7 +400,7 @@ THE SOFTWARE.
                     clsName += ' active';
                 }
                 if (isInDisableDates(prevMonth) || !isInEnableDates(prevMonth)) {
-                    clsName += ' disabled';
+                    clsName += ' enable';
                 }
                 if (picker.options.showToday === true) {
                     if (prevMonth.isSame(pMoment(), 'day')) {
@@ -415,6 +415,7 @@ THE SOFTWARE.
                         }
                     }
                 }
+
                 row.append('<td class="day' + clsName + '">' + prevMonth.date() + '</td>');
                 prevMonth.add(1, "d");
             }
